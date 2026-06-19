@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>รถสไลด์มหาสารคาม บริการรถยกรถสไลด์มหาสารคาม ติดต่อได้ 24 ชม.</title>
+  <meta name="description" content="รถสไลด์มหาสารคาม บริการรถยกรถสไลด์มหาสารคาม บริการช่วยเหลือฉุกเฉิน 24 ชั่วโมง รถตกข้างทาง รถเสีย พ่วงแบตเตอรี่ ดูแลด้วยมืออาชีพ">
+
+  <!-- Google Fonts: Kanit (display, road-sign character), Prompt (body), JetBrains Mono (dispatch readouts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700;800&family=Prompt:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --asphalt: #14161a;
+      --asphalt-soft: #1a1d22;
+      --panel: #1f2329;
+      --panel-line: #2c313a;
+      --amber: #ffa916;
+      --amber-soft: #cf8810;
+      --red: #e8392b;
+      --red-dark: #c22b21;
+      --line-green: #06c755;
+      --fb-blue: #1877f2;
+      --messenger: #0084ff;
+      --ink: #f4f5f7;
+      --ink-dim: #9ba1ab;
+      --ink-faint: #6b7280;
+      --font-display: 'Kanit', sans-serif;
+      --font-body: 'Prompt', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--asphalt);
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.045) 1px, transparent 0);
+      background-size: 24px 24px;
+      color: var(--ink);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+    }
+
+    a { color: inherit; }
+
+    img { max-width: 100%; display: block; }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* ===== Reveal-on-scroll ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ===== Header ===== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(20, 22, 26, 0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--panel-line);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      gap: 16px;
+    }
+
+    .brand-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+    }
+
+    /* สไตล์โลโก้รูปภาพวงกลมใหม่ */
+    .brand-logo img.brand-img-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--amber);
+      box-shadow: 0 0 8px rgba(255, 169, 22, 0.3);
+    }
+
+    .brand-logo span { color: var(--amber); }
+
+    .nav-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-dim);
+      padding: 6px 12px;
+      border: 1px solid var(--panel-line);
+      border-radius: 999px;
+      background: var(--asphalt-soft);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #2ee06b;
+      box-shadow: 0 0 0 0 rgba(46, 224, 107, 0.6);
+      animation: dot-pulse 2s infinite;
+    }
+    @media (prefers-reduced-motion: reduce) { .status-dot { animation: none; } }
+
+    @keyframes dot-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(46, 224, 107, 0.55); }
+      70% { box-shadow: 0 0 0 6px rgba(46, 224, 107, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(46, 224, 107, 0); }
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 22px;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      color: var(--ink-dim);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.25s;
+    }
+    .nav-menu a:hover { color: var(--amber); }
+
+    /* ===== Hero ===== */
+    .hero {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 20px 40px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .beacon-glow {
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      width: 560px;
+      height: 360px;
+      transform: translateX(-50%);
+      background: radial-gradient(closest-side, rgba(255, 169, 22, 0.30), rgba(255, 169, 22, 0) 70%);
+      filter: blur(4px);
+      animation: beacon-pulse 3.4s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes beacon-pulse {
+      0%, 100% { opacity: 0.55; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .beacon-glow { animation: none; opacity: 0.7; }
+    }
+
+    .eyebrow {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--amber);
+      background: rgba(255, 169, 22, 0.1);
+      border: 1px solid rgba(255, 169, 22, 0.35);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    .banner-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+      border: 1px solid var(--panel-line);
+      margin-bottom: 32px;
+    }
+
+    .banner-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .hero-title {
+      position: relative;
+      z-index: 1;
+      font-size: 2.4rem;
+      color: var(--ink);
+      margin-bottom: 16px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+    .hero-title .accent { color: var(--amber); }
+
+    .hero-subtitle {
+      position: relative;
+      z-index: 1;
+      font-size: 1.1rem;
+      color: var(--ink-dim);
+      max-width: 760px;
+      margin: 0 auto 36px auto;
+    }
+
+    /* ===== Dispatch panel (contact buttons) ===== */
+    .dispatch-panel {
+      position: relative;
+      z-index: 1;
+      max-width: 920px;
+      margin: 0 auto 8px auto;
+      border: 1px solid var(--panel-line);
+      border-radius: 16px;
+      background: var(--panel);
+      padding: 22px;
+    }
+
+    .dispatch-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-dim);
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .btn-contact {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      border: 1px solid transparent;
+      background: var(--asphalt-soft);
+    }
+
+    .btn-contact:hover {
+      transform: translateY(-3px);
+    }
+
+    .contact-icon {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-align: left;
+    }
+
+    .contact-label {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .contact-value {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .btn-phone-1 { border-color: rgba(232, 57, 43, 0.4); }
+    .btn-phone-1 .contact-icon { background: var(--red); color: white; }
+    .btn-phone-1:hover { border-color: var(--red); box-shadow: 0 8px 22px rgba(232,57,43,0.25); }
+
+    .btn-phone-2 { border-color: rgba(255, 169, 22, 0.4); }
+    .btn-phone-2 .contact-icon { background: var(--amber); color: var(--asphalt); }
+    .btn-phone-2:hover { border-color: var(--amber); box-shadow: 0 8px 22px rgba(255,169,22,0.22); }
+
+    .btn-line { border-color: rgba(6, 199, 85, 0.4); }
+    .btn-line .contact-icon { background: var(--line-green); color: white; }
+    .btn-line:hover { border-color: var(--line-green); box-shadow: 0 8px 22px rgba(6,199,85,0.22); }
+
+    .btn-fb { border-color: rgba(24, 119, 242, 0.4); }
+    .btn-fb .contact-icon { background: var(--fb-blue); color: white; }
+    .btn-fb:hover { border-color: var(--fb-blue); box-shadow: 0 8px 22px rgba(24,119,242,0.22); }
+
+    .btn-msg { border-color: rgba(0, 132, 255, 0.4); }
+    .btn-msg .contact-icon { background: var(--messenger); color: white; }
+    .btn-msg:hover { border-color: var(--messenger); box-shadow: 0 8px 22px rgba(0, 132, 255, 0.22); }
+
+    /* ===== Hazard stripe divider ===== */
+    .hazard-divider {
+      height: 10px;
+      width: 100%;
+      background: repeating-linear-gradient(
+        45deg,
+        var(--amber) 0px, var(--amber) 16px,
+        var(--asphalt) 16px, var(--asphalt) 32px
+      );
+      opacity: 0.9;
+    }
+
+    /* ===== Section shell ===== */
+    .section-title {
+      text-align: center;
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .section-kicker {
+      display: block;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 56px;
+      height: 3px;
+      background-color: var(--amber);
+      margin: 14px auto 0 auto;
+      border-radius: 2px;
+    }
+
+    /* ===== Services ===== */
+    .services {
+      background-color: var(--asphalt-soft);
+      padding: 70px 20px;
+      border-top: 1px solid var(--panel-line);
+      border-bottom: 1px solid var(--panel-line);
+    }
+
+    .services-grid {
+      max-width: 1200px;
+      margin: 44px auto 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+    }
+
+    .service-card {
+      background-color: var(--panel);
+      padding: 32px 24px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid var(--panel-line);
+      border-top: 3px solid var(--amber);
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--amber);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.35);
+    }
+
+    .service-icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 22px auto;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--amber);
+      border: 2px solid var(--panel-line);
+      background: var(--asphalt-soft);
+    }
+
+    .service-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .service-card p {
+      color: var(--ink-dim);
+      font-size: 0.95rem;
+    }
+
+    /* ===== Gallery ===== */
+    .gallery {
+      max-width: 1200px;
+      margin: 70px auto;
+      padding: 0 20px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 30px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      border: 1px solid var(--panel-line);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .gallery-item:hover img { transform: scale(1.06); }
+
+    .gallery-caption {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 16px 14px 12px;
+      font-size: 0.85rem;
+      color: var(--ink);
+      background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
+      transform: translateY(8px);
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .gallery-item:hover .gallery-caption {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gallery-more {
+      text-align: center;
+      margin-top: 34px;
+    }
+
+    /* ===== About ===== */
+    .about-section {
+      background-color: var(--asphalt-soft);
+      padding: 70px 20px;
+      border-top: 1px solid var(--panel-line);
+      border-bottom: 1px solid var(--panel-line);
+    }
+
+    .about-container {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .about-text {
+      color: var(--ink-dim);
+      font-size: 1.08rem;
+      margin-bottom: 22px;
+    }
+
+    .about-address {
+      color: var(--amber) !important;
+      text-align: center !important;
+      font-weight: 500;
+    }
+
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 18px;
+      margin: 36px auto 0;
+      max-width: 760px;
+    }
+
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--panel-line);
+      border-radius: 10px;
+      padding: 20px 12px;
+    }
+
+    .stat-number {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--amber);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--ink-faint);
+      margin-top: 4px;
+      display: block;
+    }
+
+    /* ===== Map ===== */
+    .map-container {
+      max-width: 1200px;
+      margin: 70px auto;
+      padding: 0 20px;
+    }
+
+    .map-wrapper {
+      position: relative;
+      padding-bottom: 50%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--panel-line);
+      filter: saturate(0.85) brightness(0.92);
+    }
+
+    .map-wrapper iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      background-color: #0d0e10;
+      padding: 34px 20px;
+      text-align: center;
+      border-top: 1px solid var(--panel-line);
+      font-size: 0.88rem;
+      color: var(--ink-faint);
+    }
+
+    footer a {
+      color: var(--amber);
+      text-decoration: none;
+    }
+
+    /* ===== Sticky mobile CTA ===== */
+    .sticky-call-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(20, 22, 26, 0.97);
+      border-top: 1px solid var(--panel-line);
+      padding: 10px 16px;
+      display: none;
+      z-index: 999;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sticky-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-faint);
+      flex: 0 0 auto;
+    }
+
+    .sticky-call-btn {
+      flex: 1;
+      background: linear-gradient(135deg, var(--red), var(--red-dark));
+      color: white;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.05rem;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(232, 57, 43, 0.55); }
+      70% { box-shadow: 0 0 0 10px rgba(232, 57, 43, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(232, 57, 43, 0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sticky-call-btn { animation: none; }
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .nav-menu { display: none; }
+      .nav-status { display: none; }
+      .hero-title { font-size: 1.85rem; }
+      .dispatch-panel { padding: 16px; }
+      .sticky-call-bar { display: flex; }
+      .sticky-status { display: none; }
+      body { padding-bottom: 74px; }
+      .stat-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="#home" class="brand-logo">
+        <!-- เปลี่ยนจากไอคอนเดิม เป็นรูปภาพโลโก้วงกลมใหม่ที่คุณแนบมา -->
+        <img src="wp-content/uploads/2026/02/logo.png" alt="โลโก้ นิว สไลด์ออน" class="brand-img-logo">
+        นิว <span>สไลด์ออน บริการ 24 ชั่วโมง</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#home">หน้าแรก</a></li>
+        <li><a href="#services">บริการของเรา</a></li>
+        <li><a href="#gallery">ผลงานของเรา</a></li>
+        <li><a href="#about">เกี่ยวกับเรา</a></li>
+        <li><a href="#map">แผนที่</a></li>
+      </ul>
+      <span class="nav-status"><span class="status-dot"></span> พร้อมรับสาย 24 ชม.</span>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="hero" id="home">
+    <div class="beacon-glow" aria-hidden="true"></div>
+
+    <span class="eyebrow"><i class="fa-solid fa-tower-broadcast"></i> หน่วยกู้ภัยรถสไลด์ • มหาสารคาม</span>
+
+    <div class="banner-container">
+      <img src="wp-content/uploads/2026/02/new2-2.png" alt="นิว สไลด์ออน รถยก รถสไลด์ มหาสารคาม" class="banner-img">
+    </div>
+
+    <h1 class="hero-title">รถสไลด์มหาสารคาม บริการ <span class="accent">24 ชั่วโมง</span></h1>
+    <p class="hero-subtitle">
+       บริการ รถยก รถสไลด์ 
+ บริการ เก็บกู้ รถอุบัติเหตุ วินซ์รถติดหล่ม บริการ ย้ายซุ้มชา ซุ้มขายของ ทุกชนิด.
+ บริการ พ่วงแบตเตอรี่
+ บริการ ขนย้ายสิ่งของ เคลื่อนย้ายรถ ข้ามจังหวัดภายในประเทศ <br>
+     
+    </p>
+
+    <!-- Dispatch / Contact Panel -->
+    <div class="dispatch-panel">
+      <div class="dispatch-header"><i class="fa-solid fa-satellite-dish"></i> เลือกช่องทางติดต่อด่วน</div>
+      <div class="contact-grid">
+        <a href="tel:065-005-0402" class="btn-contact btn-phone-1">
+          <span class="contact-icon"><i class="fa-solid fa-phone-flip"></i></span>
+          <span class="contact-info">
+            <span class="contact-label">สายด่วน 1</span>
+            <span class="contact-value">065-005-0402</span>
+          </span>
+        </a>
+        <a href="tel:099-174-4960" class="btn-contact btn-phone-2">
+          <span class="contact-icon"><i class="fa-solid fa-phone-flip"></i></span>
+          <span class="contact-info">
+            <span class="contact-label">สายด่วน 2</span>
+            <span class="contact-value">099-174-4960</span>
+          </span>
+        </a>
+        <a href="http://line.me/ti/p/~0650050402" target="_blank" class="btn-contact btn-line">
+          <span class="contact-icon"><i class="fa-brands fa-line"></i></span>
+          <span class="contact-info">
+            <span class="contact-label">LINE Official</span>
+            <span class="contact-value">0650050402 นิวสไลด์ออน </span>
+          </span>
+        </a>
+        <a href="https://www.facebook.com/new.metha.win" target="_blank" class="btn-contact btn-fb">
+          <span class="contact-icon"><i class="fa-brands fa-facebook"></i></span>
+          <span class="contact-info">
+            <span class="contact-label">Facebook</span>
+            <span class="contact-value">นิว สไลด์ออน (นิว เมธาวิน)</span>
+          </span>
+        </a>
+        <a href="https://m.me/1448374446679061" target="_blank" class="btn-contact btn-msg">
+          <span class="contact-icon"><i class="fa-brands fa-facebook-messenger"></i></span>
+          <span class="contact-info">
+            <span class="contact-label">Messenger</span>
+            <span class="contact-value">นิว สไลด์ออน (นิว เมธาวิน)</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <div class="hazard-divider" aria-hidden="true"></div>
+
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <span class="section-kicker">What we do</span>
+    <h2 class="section-title">บริการทั้งหมดของเรา</h2>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
+        <h3>บริการรถสไลด์ออน</h3>
+        <p>ยกรถยนต์ มอเตอร์ไซค์บิ๊กไบค์ และยานพาหนะทุกชนิด เคลื่อนย้ายปลอดภัยด้วยระบบสไลด์นิ่มนวลตลอดเส้นทาง</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fa-solid fa-car-burst"></i></div>
+        <h3>กู้ภัยอุบัติเหตุ & รถเสีย</h3>
+        <p>กู้รถตกข้างทาง รถหงายท้อง รถชน หรือรถสตาร์ทไม่ติดในเขตสารคามและพื้นที่ใกล้เคียง ตลอด 24 ชั่วโมง</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fa-solid fa-charging-station"></i></div>
+        <h3>พ่วงแบตเตอรี่ & เติมน้ำมัน</h3>
+        <p>บริการฉุกเฉินนอกสถานที่ แบตหมด น้ำมันหมดกลางทาง ทีมงานพร้อมเดินทางไปช่วยเหลือทันที</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+        <h3>บริการขนย้ายของต่างๆ</h3>
+        <p>บริการขนย้ายสิ่งของต่างๆ ย้ายซุ้มชา ซุ้มขายของ ย้ายตู้น้ำ หรือขนย้ายอุปกรณ์สิ่งปลูกสร้างขนาดใหญ่ทั่วประเทศ</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="gallery" id="gallery">
+    <span class="section-kicker">Field work</span>
+    <h2 class="section-title">ผลงานและการทำงานของเรา</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_15-570x350.jpg" alt="ผลงานรถยกสารคาม">
+        <div class="gallery-caption">ผลงานรถยกสารคาม</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_13-570x350.jpg" alt="รถสไลด์มหาสารคาม">
+        <div class="gallery-caption">รถสไลด์มหาสารคาม</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_4-570x350.jpg" alt="รถสไลด์ช่วยเหลือ 24 ชั่วโมง">
+        <div class="gallery-caption">รถสไลด์ช่วยเหลือ 24 ชั่วโมง</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_2-570x350.jpg" alt="บริการยกรถยนต์">
+        <div class="gallery-caption">บริการยกรถยนต์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_10-570x350.jpg" alt="รถยกรถลากมหาสารคาม">
+        <div class="gallery-caption">รถยกรถลากมหาสารคาม</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_18-570x350.jpg" alt="บริการรถยกช่วยเหลือ">
+        <div class="gallery-caption">บริการรถยกช่วยเหลือ</div>
+      </div>
+      <!-- รูปภาพเพิ่มเติมที่เตรียมไว้ -->
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026-_1_260226_1.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026-_1_260226_2.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026-_1_260226_4.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_1.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_3.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_5.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_6.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_7.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_8.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_9.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_11.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_12.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_14.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_16.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="wp-content/uploads/2026/02/LINE_ALBUM_2522026_260226_17.jpg" alt="ผลงานรถสไลด์มหาสารคาม">
+        <div class="gallery-caption">งานกู้ภัยรถสไลด์</div>
+      </div>
+    </div>
+    <div class="gallery-more">
+      <a href="https://www.facebook.com/new.metha.win" target="_blank" class="btn-contact btn-fb" style="display: inline-flex; max-width: 250px;">
+        <span class="contact-icon"><i class="fa-solid fa-images"></i></span>
+        <span class="contact-info"><span class="contact-value" style="font-family: var(--font-body); font-size: 1rem;">ดูรูปภาพเพิ่มเติมบน Facebook</span></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section" id="about">
+    <div class="about-container">
+      <span class="section-kicker">Who we are</span>
+      <h2 class="section-title">เกี่ยวกับเรา</h2>
+      
+      <div class="about-text" style="max-width: 780px; margin: 0 auto 30px; text-align: left; line-height: 1.8;">
+        <p style="margin-bottom: 16px; text-align: center; font-size: 1.15rem;">
+          <strong>ห้างหุ้นส่วนจำกัด นิวรุ่งเรืองทรัพย์รถยก</strong><br>
+          <span style="color: var(--amber);">ผู้เชี่ยวชาญด้านการเคลื่อนย้ายและกู้ภัยรถยนต์ในจังหวัดมหาสารคาม</span>
+        </p>
+        
+        <ul style="list-style: none; padding-left: 0; margin-bottom: 24px;">
+          <li style="margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start;">
+            <i class="fa-solid fa-circle-check" style="color: var(--amber); margin-top: 5px; flex-shrink: 0;"></i>
+            <span><strong>บริการ 24 ชั่วโมง ไม่มีวันหยุด:</strong> ทีมงานมืออาชีพพร้อมแสตนด์บายช่วยเหลือท่านตลอดเวลาเมื่อเกิดเหตุฉุกเฉิน</span>
+          </li>
+          <li style="margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start;">
+            <i class="fa-solid fa-circle-check" style="color: var(--amber); margin-top: 5px; flex-shrink: 0;"></i>
+            <span><strong>ครอบคลุมทุกสถานการณ์:</strong> ไม่ว่าจะเป็นรถเสียทั่วไป รถสตาร์ทไม่ติด รถตกข้างทาง หรืออุบัติเหตุหนัก-เบา</span>
+          </li>
+          <li style="margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start;">
+            <i class="fa-solid fa-circle-check" style="color: var(--amber); margin-top: 5px; flex-shrink: 0;"></i>
+            <span><strong>ความปลอดภัยมาตรฐานสูง:</strong> เราเตรียมอุปกรณ์และเครื่องมือยกรถที่ทันสมัย เพื่อดูแลรักษาความปลอดภัยของรถท่านในขณะเคลื่อนย้ายอย่างดีที่สุด</span>
+          </li>
+        </ul>
+      </div>
+
+      <p class="about-text about-address">
+        <i class="fa-solid fa-location-dot"></i> ที่อยู่ : 65/352 บ้านเอื้ออาทร2 ซอย 8 ตำบลตลาด อำเภอเมือง จังหวัดมหาสารคาม
+      </p>
+
+      <div class="stat-strip">
+        <div class="stat-card reveal">
+          <span class="stat-number">24</span>
+          <span class="stat-label">ชั่วโมง ทุกวัน</span>
+        </div>
+        <div class="stat-card reveal">
+          <span class="stat-number">2</span>
+          <span class="stat-label">สายด่วนโทรฉุกเฉิน</span>
+        </div>
+        <div class="stat-card reveal">
+          <span class="stat-number">5</span>
+          <span class="stat-label">ช่องทางติดต่อ</span>
+        </div>
+        <div class="stat-card reveal">
+          <span class="stat-number">ทั่วไทย</span>
+          <span class="stat-label">พื้นที่ให้บริการ</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Google Map Section -->
+  <section class="map-container" id="map">
+    <span class="section-kicker">Find us</span>
+    <h2 class="section-title">แผนที่ร้านของเรา</h2>
+    <div class="map-wrapper">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3831.9757222110215!2d103.295386175138!3d16.17020228452401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3122a79a8f42eaa1%3A0x7c0a1928b2c5554b!2z4LmC4LiE4Lij4LiH4LiB4Liy4Lij4Lia4LmJ4Liy4LiZ4LmA4Lit4Li34LmJ4Lit4Lit4Liy4LiX4LijIOC4oeC4q-C4suC4quC4suC4o-C4hOC4suC4oSAy!5e0!3m2!1sth!2sth!4v1772189078910!5m2!1sth!2sth" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 รถสไลด์มหาสารคาม - ห้างหุ้นส่วนจำกัด นิวรุ่งเรืองทรัพย์รถยก. All rights reserved.</p>
+    <p style="margin-top: 10px; font-size: 0.8rem;">ออกแบบเว็บไซต์ใหม่เพื่อความรวดเร็วและรองรับมือถืออย่างดีเยี่ยม</p>
+  </footer>
+
+  <!-- Sticky Bottom Call Bar for Mobile -->
+  <div class="sticky-call-bar">
+    <span class="sticky-status"><span class="status-dot"></span></span>
+    <a href="tel:065-005-0402" class="sticky-call-btn">
+      <i class="fa-solid fa-phone-volume"></i> โทรด่วนบริการ 24 ชม. กดที่นี่
+    </a>
+  </div>
+
+  <script>
+    // Reveal sections gently as they scroll into view.
+    if ('IntersectionObserver' in window) {
+      var revealEls = document.querySelectorAll('.reveal');
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      revealEls.forEach(function (el) { observer.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        el.classList.add('in-view');
+      });
+    }
+  </script>
+
+</body>
+</html>
